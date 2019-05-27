@@ -43,7 +43,9 @@ Now you can start new container from this image with:
 ```sh
 docker run -it -p 8080:8080 --name coursera-aml-nlp akashin/coursera-aml-nlp
 ```
-This will start the Ubuntu instance and give you an access to its command line. You can type `run_notebook` to launch IPython notebook server. 
+This will start the Ubuntu instance and give you an access to its command line. You can type `run_notebook` to launch IPython notebook server.
+
+Note that we are using `-p 8080:8080` argument to set up port forwarding to make IPython notebook accessible at address http://localhost:8080. If you're using AWS, make sure that you've [set up the port forwarding](https://github.com/hse-aml/natural-language-processing/blob/master/AWS-tutorial.md#2-set-up-dependencies-and-run-your-project) there as well.
 
 You may find it useful to mount a directory from your local machine within the container using `-v` option.
 
@@ -146,6 +148,7 @@ e5b7bcd85a1b        akashin/coursera-aml-nlp   "/bin/bash"         Less than a s
 ```
 If the part about `PORTS` differs, remove the current container following [instructions](#other-operations-on-the-container) and start it again.
 - Make sure that browser proxy settings don't interfere with accessing local web sites.
+- If you're running Docker on AWS, make sure you've set up port forwarding as described [here](https://github.com/hse-aml/natural-language-processing/blob/master/AWS-tutorial.md#2-set-up-dependencies-and-run-your-project).
 
 ### How do I load data into Docker container?
 To access the data in the container, we recommend to use `-v` flag described [here](#run-container-for-the-first-time) to mount a local directory from your computer into the container filesystem. For more details read [Docker documentation](https://docs.docker.com/storage/volumes/).
@@ -160,6 +163,10 @@ This means that the container with this name is already created. You can connect
 
 ### StarSpace/Jupyter notebook crashes in Docker
 This usually happens due to low default 2GB memory limit on Windows and OSX. Follow this [instructions](#change-ram-limits-of-the-container) to fix this.
+
+### "This computer doesn't have VT-X/AMD-v enabled", when trying to run the container
+This usually happens if you're using Docker Toolbox that needs Virtual Box support - hence the need for the hardware virtualization that can be enabled in BIOS.
+Try to turn on the VT-X support in BIOS as described in [Microsoft documentation](https://blogs.technet.microsoft.com/canitpro/2015/09/08/step-by-step-enabling-hyper-v-for-use-on-windows-10/) or on [GitHub](https://github.com/docker/machine/issues/4271).
 
 ## Reporting the issue to the Coursera forum
 Before reporting the issue to the Coursera forum, please, make sure that you've checked the [troubleshooting](#troubleshooting) steps. Only if they don't help, post all relevant error messages, throubleshooting results, and the following information to your post:
